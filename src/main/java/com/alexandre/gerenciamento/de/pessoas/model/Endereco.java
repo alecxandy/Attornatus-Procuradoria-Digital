@@ -11,7 +11,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Setter
 @Getter
-@Table(name = "tb_cidade")
+@Table(name = "tb_endereco")
 public class Endereco {
 
     @Id
@@ -30,7 +30,5 @@ public class Endereco {
     @Column(name = "cidade")
     private String cidade;
 
-    @OneToOne(mappedBy = "endereco")
-    private Pessoa pessoa;
 
 }
