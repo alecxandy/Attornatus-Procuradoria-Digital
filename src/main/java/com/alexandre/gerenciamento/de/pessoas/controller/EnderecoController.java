@@ -2,6 +2,7 @@ package com.alexandre.gerenciamento.de.pessoas.controller;
 
 import com.alexandre.gerenciamento.de.pessoas.model.Endereco;
 import com.alexandre.gerenciamento.de.pessoas.service.EnderecoService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +19,7 @@ public class EnderecoController {
 
 
     @PostMapping
-    public ResponseEntity<Long> save(@RequestBody Endereco endereco) {
+    public ResponseEntity<Long> save(@RequestBody @Valid Endereco endereco) {
         Endereco end = enderecoService.save(endereco);
         return ResponseEntity.status(HttpStatus.CREATED).body(end.getId());
     }
@@ -44,7 +45,7 @@ public class EnderecoController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Endereco> update(@PathVariable Long id, @RequestBody Endereco endereco) {
+    public ResponseEntity<Endereco> update(@PathVariable Long id, @RequestBody @Valid Endereco endereco) {
         Endereco endereco1 = enderecoService.findById(id).map(e -> {
             e.setId(id);
             e.setCep(endereco.getCep());

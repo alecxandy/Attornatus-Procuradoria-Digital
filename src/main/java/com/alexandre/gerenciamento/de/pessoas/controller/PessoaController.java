@@ -5,6 +5,7 @@ import com.alexandre.gerenciamento.de.pessoas.model.Pessoa;
 import com.alexandre.gerenciamento.de.pessoas.model.dto.PessoaDTO;
 import com.alexandre.gerenciamento.de.pessoas.service.EnderecoService;
 import com.alexandre.gerenciamento.de.pessoas.service.PessoaService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +23,7 @@ public class PessoaController {
     private EnderecoService enderecoService;
 
     @PostMapping
-    public ResponseEntity<Pessoa> save(@RequestBody PessoaDTO pessoaDTO) {
+    public ResponseEntity<Pessoa> save(@RequestBody @Valid PessoaDTO pessoaDTO) {
         Endereco endereco = enderecoService.findById(pessoaDTO.getEndereco())
                 .orElseThrow(() -> new RuntimeException("id does not exist"));
         Pessoa p = new Pessoa();
@@ -53,7 +54,7 @@ public class PessoaController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Pessoa> update(@PathVariable Long id, @RequestBody PessoaDTO pessoaDTO) {
+    public ResponseEntity<Pessoa> update(@PathVariable Long id, @RequestBody @Valid PessoaDTO pessoaDTO) {
         Endereco endereco = enderecoService.findById(pessoaDTO.getEndereco())
                 .orElseThrow(() -> new RuntimeException("id does not exist"));
         Pessoa pessoa = pessoaService.findById(id).map(p -> {
