@@ -1,7 +1,9 @@
 package com.alexandre.gerenciamento.de.pessoas.controller;
 
+import com.alexandre.gerenciamento.de.pessoas.exceptions.NotFoundException;
 import com.alexandre.gerenciamento.de.pessoas.model.Endereco;
 import com.alexandre.gerenciamento.de.pessoas.service.EnderecoService;
+import jakarta.persistence.EntityResult;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -32,7 +34,7 @@ public class EnderecoController {
     @GetMapping("/{id}")
     public ResponseEntity<Endereco> findById(@PathVariable Long id) {
         Endereco endereco = enderecoService.findById(id)
-                .orElseThrow(() -> new RuntimeException("id does not exist"));
+                .orElseThrow(() -> new NotFoundException("id does not exist"));
         return ResponseEntity.status(HttpStatus.OK).body(endereco);
     }
 
@@ -41,11 +43,11 @@ public class EnderecoController {
         enderecoService.findById(id).map(endereco -> {
             enderecoService.deleteById(id);
             return endereco;
-        }).orElseThrow(() -> new RuntimeException("id does not exist"));
+        }).orElseThrow(() -> new NotFoundException("id does not exist"));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Endereco> update(@PathVariable Long id, @RequestBody @Valid Endereco endereco) {
+    public ResponseEntity<Endereco> update(@PathVariable Long id, @RequestBody  @Valid Endereco endereco) {
         Endereco endereco1 = enderecoService.findById(id).map(e -> {
             e.setId(id);
             e.setCep(endereco.getCep());
@@ -54,7 +56,7 @@ public class EnderecoController {
             e.setLogradouro(endereco.getLogradouro());
             enderecoService.save(e);
             return e;
-        }).orElseThrow(() -> new RuntimeException("id does not exist"));
+        }).orElseThrow(() -> new NotFoundException("id does not exist"));
         return ResponseEntity.status(HttpStatus.OK).body(endereco);
     }
 

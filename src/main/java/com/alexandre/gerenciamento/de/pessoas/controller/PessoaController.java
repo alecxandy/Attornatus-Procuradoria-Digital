@@ -1,5 +1,6 @@
 package com.alexandre.gerenciamento.de.pessoas.controller;
 
+import com.alexandre.gerenciamento.de.pessoas.exceptions.NotFoundException;
 import com.alexandre.gerenciamento.de.pessoas.model.Endereco;
 import com.alexandre.gerenciamento.de.pessoas.model.Pessoa;
 import com.alexandre.gerenciamento.de.pessoas.model.dto.PessoaDTO;
@@ -25,7 +26,7 @@ public class PessoaController {
     @PostMapping
     public ResponseEntity<Pessoa> save(@RequestBody @Valid PessoaDTO pessoaDTO) {
         Endereco endereco = enderecoService.findById(pessoaDTO.getEndereco())
-                .orElseThrow(() -> new RuntimeException("id does not exist"));
+                .orElseThrow(() -> new NotFoundException("id does not exist"));
         Pessoa p = new Pessoa();
         p.setNome(pessoaDTO.getNome());
         p.setEndereco(endereco);
@@ -41,7 +42,7 @@ public class PessoaController {
     @GetMapping("/{id}")
     public ResponseEntity<Pessoa> findById(@PathVariable Long id) {
         Pessoa pessoa = pessoaService.findById(id)
-                .orElseThrow(() -> new RuntimeException("id does not exist"));
+                .orElseThrow(() -> new NotFoundException("id does not exist"));
         return ResponseEntity.status(HttpStatus.OK).body(pessoa);
     }
 
@@ -50,21 +51,21 @@ public class PessoaController {
         pessoaService.findById(id).map(pessoa -> {
             pessoaService.deleteById(id);
             return pessoa;
-        }).orElseThrow(() -> new RuntimeException("id does not exist"));
+        }).orElseThrow(() -> new NotFoundException("id does not exist"));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Pessoa> update(@PathVariable Long id, @RequestBody @Valid PessoaDTO pessoaDTO) {
         Endereco endereco = enderecoService.findById(pessoaDTO.getEndereco())
-                .orElseThrow(() -> new RuntimeException("id does not exist"));
+                .orElseThrow(() -> new NotFoundException("id does not exist"));
         Pessoa pessoa = pessoaService.findById(id).map(p -> {
             p.setId(id);
             p.setDataNascimento(pessoaDTO.getDataNascimento());
             p.setEndereco(endereco);
             p.setNome(pessoaDTO.getNome());
             return p;
-        }).orElseThrow(() -> new RuntimeException("id does not exist"));
-    return ResponseEntity.status(HttpStatus.OK).body(pessoa);
+        }).orElseThrow(() -> new NotFoundException("id does not exist"));
+        return ResponseEntity.status(HttpStatus.OK).body(pessoa);
     }
 
 }
