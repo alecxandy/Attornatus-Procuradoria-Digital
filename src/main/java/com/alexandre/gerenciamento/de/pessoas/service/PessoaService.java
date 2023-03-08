@@ -3,6 +3,8 @@ package com.alexandre.gerenciamento.de.pessoas.service;
 import com.alexandre.gerenciamento.de.pessoas.model.Pessoa;
 import com.alexandre.gerenciamento.de.pessoas.repository.PessoaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,8 +20,8 @@ public class PessoaService {
         return pessoaRepository.save(pessoa);
     }
 
-    public List<Pessoa> findAll() {
-        return pessoaRepository.findAll();
+    public Page<Pessoa> findAll(Pageable pageable) {
+        return pessoaRepository.findAll(pageable);
     }
 
     public Optional<Pessoa> findById(Long id) {

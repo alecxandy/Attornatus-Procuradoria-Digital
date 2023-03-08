@@ -1,6 +1,6 @@
 package com.alexandre.gerenciamento.de.pessoas.model.dto;
 
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,12 +13,10 @@ import java.time.LocalDate;
 public class PessoaDTO {
 
     private Long id;
-    @NotBlank(message = "Campo nome não informado")
+    @NotNull(message = "Preencher nome")
     private String nome;
-
-    @NotBlank(message = "Campo data de nascimento não informado")
+    @NotNull(message = "Preencher data de nascimento")
     private LocalDate dataNascimento;
-    @NotBlank(message = "Campo endereço não informado")
     private Long endereco;
 
 }

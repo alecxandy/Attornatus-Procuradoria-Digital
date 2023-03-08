@@ -6,13 +6,12 @@ import com.alexandre.gerenciamento.de.pessoas.model.Pessoa;
 import com.alexandre.gerenciamento.de.pessoas.model.dto.PessoaDTO;
 import com.alexandre.gerenciamento.de.pessoas.service.EnderecoService;
 import com.alexandre.gerenciamento.de.pessoas.service.PessoaService;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/pessoa")
@@ -24,7 +23,7 @@ public class PessoaController {
     private EnderecoService enderecoService;
 
     @PostMapping
-    public ResponseEntity<Pessoa> save(@RequestBody @Valid PessoaDTO pessoaDTO) {
+    public ResponseEntity<Pessoa> save(@RequestBody PessoaDTO pessoaDTO) {
         Endereco endereco = enderecoService.findById(pessoaDTO.getEndereco())
                 .orElseThrow(() -> new NotFoundException("id does not exist"));
         Pessoa p = new Pessoa();
@@ -35,8 +34,8 @@ public class PessoaController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Pessoa>> findAll() {
-        return ResponseEntity.status(HttpStatus.OK).body(pessoaService.findAll());
+    public ResponseEntity<Page<Pessoa>> findAll(Pageable pageable) {
+        return ResponseEntity.status(HttpStatus.OK).body(pessoaService.findAll(pageable));
     }
 
     @GetMapping("/{id}")
@@ -55,7 +54,7 @@ public class PessoaController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Pessoa> update(@PathVariable Long id, @RequestBody @Valid PessoaDTO pessoaDTO) {
+    public ResponseEntity<Pessoa> update(@PathVariable Long id, @RequestBody PessoaDTO pessoaDTO) {
         Endereco endereco = enderecoService.findById(pessoaDTO.getEndereco())
                 .orElseThrow(() -> new NotFoundException("id does not exist"));
         Pessoa pessoa = pessoaService.findById(id).map(p -> {
