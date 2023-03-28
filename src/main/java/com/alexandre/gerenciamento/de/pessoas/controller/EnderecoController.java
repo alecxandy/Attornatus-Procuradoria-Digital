@@ -6,13 +6,15 @@ import com.alexandre.gerenciamento.de.pessoas.service.EnderecoService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/endereco")
+@RequestMapping("/v1/endereco")
 public class EnderecoController {
 
     @Autowired
@@ -20,13 +22,15 @@ public class EnderecoController {
 
 
     @PostMapping
-    public ResponseEntity<Long> save( @RequestBody Endereco endereco) {
+    public ResponseEntity<Long> save(@RequestBody Endereco endereco) {
         Endereco end = enderecoService.save(endereco);
         return ResponseEntity.status(HttpStatus.CREATED).body(end.getId());
     }
 
+    //http://localhost:8080/spring-mvc-basics/api/foos?id=1&id=2   examplo de parametro com requestParam
     @GetMapping
-    public ResponseEntity<Page<Endereco>> findAll(Pageable pageable) { //Paginação
+    public ResponseEntity<Page<Endereco>> findAll(@RequestParam(name = "x") int x,@RequestParam(name = "y") int y) { //Paginação
+        Pageable pageable = PageRequest.of(x, y, Sort.by("cidade"));
         return ResponseEntity.status(HttpStatus.OK).body(enderecoService.findAll(pageable));
     }
 

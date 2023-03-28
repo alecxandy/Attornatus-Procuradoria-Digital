@@ -8,13 +8,14 @@ import com.alexandre.gerenciamento.de.pessoas.service.EnderecoService;
 import com.alexandre.gerenciamento.de.pessoas.service.PessoaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
+import java.util.List;
 @RestController
-@RequestMapping("/api/pessoa")
+@RequestMapping("/v1/pessoa")
 public class PessoaController {
 
     @Autowired
@@ -34,8 +35,8 @@ public class PessoaController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<Pessoa>> findAll(Pageable pageable) {
-        return ResponseEntity.status(HttpStatus.OK).body(pessoaService.findAll(pageable));
+    public ResponseEntity<List<Pessoa>> findAll() {
+        return ResponseEntity.status(HttpStatus.OK).body(pessoaService.findAll());
     }
 
     @GetMapping("/{id}")

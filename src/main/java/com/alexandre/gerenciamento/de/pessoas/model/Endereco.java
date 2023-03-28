@@ -1,8 +1,6 @@
 package com.alexandre.gerenciamento.de.pessoas.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
@@ -11,6 +9,7 @@ import lombok.*;
 @AllArgsConstructor
 @Setter
 @Getter
+@EqualsAndHashCode
 @Table(name = "tb_endereco")
 public class Endereco {
 

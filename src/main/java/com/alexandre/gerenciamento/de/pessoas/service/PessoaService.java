@@ -20,8 +20,8 @@ public class PessoaService {
         return pessoaRepository.save(pessoa);
     }
 
-    public Page<Pessoa> findAll(Pageable pageable) {
-        return pessoaRepository.findAll(pageable);
+    public List<Pessoa> findAll() {
+        return pessoaRepository.findAll();
     }
 
     public Optional<Pessoa> findById(Long id) {
